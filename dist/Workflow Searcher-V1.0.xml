@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2017-08-26 04:40:43">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description>This contains the updates related to workflow search utility.</description>
+<inserted/>
+<name>Workflow Searcher-V1.0</name>
+<origin_sys_id/>
+<release_date/>
+<remote_sys_id>d759b171dbb08300d8ccd421cf961934</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2017-08-26 04:40:43</sys_created_on>
+<sys_id>b6fdf5b1dbb08300d8ccd421cf961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2017-08-26 04:40:43</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_include_0bb9f171dbb08300d8ccd421cf9619d0</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;global.WorkflowSearcherUtil&lt;/api_name&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description&gt;This script is used for workflow script seacher utility.&lt;/description&gt;&lt;name&gt;WorkflowSearcherUtil&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var WorkflowSearcherUtil= Class.create();
+WorkflowSearcherUtil.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+	
+	searchWFActivities : function()
+	{
+		var tableData='';
+		
+		var fromWorkflow=this.getParameter('sysparm_workflowID').toString();
+		var searchText=this.getParameter('sysparm_searchText').toString();
+		//var linkSetUp= gs.getProperty("glide.servlet.uri")+'wf_activity.do?sys_id=';
+		var linkSetUp= '/wf_activity.do?sys_id=';
+		
+		var wfActivities = new GlideRecord('wf_activity');
+		wfActivities.addQuery('workflow_version',fromWorkflow);
+		wfActivities.query();
+		
+		while(wfActivities.next())
+			{
+			var cExist = new GlideRecord('sys_variable_value');	cExist.addEncodedQuery('document=wf_activity^document=wf_activity^variable.elementLIKEcondition^ORvariable.internal_type.nameLIKEcondition^ORvariable.elementLIKEscript^ORvariable.internal_type.nameLIKEscript^valueLIKE'+searchText+'^document_key='+wfActivities.getValue('sys_id'));
+			cExist.query();
+			if(cExist.next())
+				{
+				if(tableData=='')
+					{
+					tableData="&lt;table id='scripts'&gt;&lt;thead&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Type&lt;/tt&gt;&lt;/thead&gt;&lt;tbody&gt;";
+				}
+				tableData = tableData+'&lt;tr&gt;&lt;td&gt;'+"&lt;a href='"+linkSetUp+wfActivities.getValue("sys_id")+"'&gt;"+wfActivities.getValue("name")+'&lt;/a&lt;/td&gt;&lt;td&gt;'+wfActivities.activity_definition.getDisplayValue()+'&lt;/td&gt;&lt;/tr&gt;';
+			}
+		}
+		if(tableData!='')
+			{
+			tableData=tableData+"&lt;/tbody&gt;&lt;/table&gt;";
+		}
+		
+		return tableData;
+	}
+	
+	
+});]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2017-08-26 04:24:41&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;0bb9f171dbb08300d8ccd421cf9619d0&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;WorkflowSearcherUtil&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_0bb9f171dbb08300d8ccd421cf9619d0&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2017-08-26 04:24:41&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Workflow Searcher-V1.0">b6fdf5b1dbb08300d8ccd421cf961924</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2017-08-26 04:40:43</sys_created_on>
+<sys_id>3afdf5b1dbb08300d8ccd421cf961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2017-08-26 04:40:43</sys_updated_on>
+<table/>
+<target_name>WorkflowSearcherUtil</target_name>
+<type>Script Include</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_page_96bb3971dbb08300d8ccd421cf9619dd</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_page"&gt;&lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;&lt;category&gt;general&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function onLoadFunction()
+{
+	document.getElementById("sys_display.workflowVersion").style.borderRadius = "15px";
+	document.getElementById('sys_display.workflowVersion').style.borderColor="#6699cc";
+	document.getElementById('sys_display.workflowVersion').style.fontSize="medium";
+	document.getElementById('sys_display.workflowVersion').size = "30";
+	
+	document.getElementById("searchString").style.borderRadius = "15px";
+	document.getElementById('searchString').style.fontSize="medium";
+	document.getElementById('searchString').size = "30";
+	document.getElementById('searchString').style.borderColor="#6699cc";
+}
+
+function searchWorkflow()
+{
+	var tableData='';
+	var fromWorkflow=gel('workflowVersion').value;
+	var searchText=gel('searchString').value;
+	if(fromWorkflow == '' || searchText == '')
+		{
+		gel('workflowInfo').innerHTML='';
+		return true;
+	}
+	
+	var checkWFActivities = new GlideAjax('WorkflowSearcherUtil');
+	checkWFActivities.addParam("sysparm_name","searchWFActivities");
+	checkWFActivities.addParam("sysparm_workflowID",fromWorkflow);
+	checkWFActivities.addParam("sysparm_searchText",searchText);
+	checkWFActivities.getXMLWait();
+	
+	tableData = checkWFActivities.getAnswer();
+	
+	
+	if(tableData!='')
+		{
+		tableData=tableData+"&lt;/tbody&gt;&lt;/table&gt;";
+		gel('workflowInfo').innerHTML=tableData;
+		jQuery('#scripts').dataTable({"sPaginationType": "full_numbers"});
+	}
+	else
+		{
+		gel('workflowInfo').innerHTML='';
+		alert("Script Not Found");
+	}
+}]]&gt;&lt;/client_script&gt;&lt;description&gt;This UI page is used to search workflow activities&lt;/description&gt;&lt;direct&gt;false&lt;/direct&gt;&lt;endpoint/&gt;&lt;html&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;
+
+
+&lt;style&gt;
+.mainButtonClass {background: none;background-image: none;background-color: #6699cc;border: none;border-radius: 6px;color: #FFFFFF;box-shadow: none;text-shadow: none;padding: 8px 4px;margin-top: 10px;width:120px;}
+
+.buttonClass {background: none;background-image: none;background-color: #6699cc;border: none;border-radius: 6px;color: #FFFFFF;box-shadow: none;text-shadow: none;padding: 8px 4px;margin-top: 10px;width:30px;}
+
+.inputClass {background: none;background-image: none;border: none;border-radius: 6px;box-shadow: none;text-shadow: none;padding: 8px 4px;margin-top: 5px;}
+
+.centered {
+    margin: 0 auto;
+    text-align: center;
+    width: 800px;
+}
+
+.lefted{
+    margin: 0 auto;
+    text-align: left;
+   
+}
+
+.righted{
+    margin: 0 auto;
+    text-align: right;
+    
+}
+
+table { empty-cells: show; }
+
+&lt;/style&gt;
+
+&lt;script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/&gt;
+
+&lt;div&gt;
+&lt;table width ="70%" align = "center"&gt;
+&lt;tr&gt;
+&lt;td width ="15%"&gt;&lt;/td&gt;
+&lt;td align = "right"&gt;&lt;label&gt;&lt;b&gt;&lt;font&gt;Select Workflow : &lt;/font&gt;&lt;/b&gt;&lt;/label&gt;&lt;/td&gt;
+&lt;td align = "left"&gt;&lt;g:ui_reference name="workflowVersion" table="wf_workflow_version" query='checked_out_by=javascript:gs.getUserID()^ORpublished=true'/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td width ="15%"&gt;&lt;/td&gt;
+&lt;td align = "right"&gt;&lt;label&gt;&lt;b&gt;&lt;font&gt;Search String : &lt;/font&gt;&lt;/b&gt;&lt;/label&gt;&lt;/td&gt;
+&lt;td align = "left"&gt;&lt;input type='text' id='searchString'/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+&lt;table&gt;
+&lt;tr&gt;&lt;td style="height:10px;"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div id="buttons" class="centered"&gt;
+&lt;button id="show" class="mainButtonClass" onclick="searchWorkflow()"&gt;Go&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+&lt;table&gt;
+&lt;tr&gt;&lt;td style="height:20px;"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div id="workflowInfo"/&gt;
+
+&lt;script&gt;
+addLoadEvent( function() {
+onLoadFunction();
+});   
+&lt;/script&gt;
+
+&lt;/j:jelly&gt;]]&gt;&lt;/html&gt;&lt;name&gt;WorkFlowSearcherUtility&lt;/name&gt;&lt;processing_script/&gt;&lt;sys_class_name&gt;sys_ui_page&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2017-08-26 04:30:52&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;96bb3971dbb08300d8ccd421cf9619dd&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;WorkFlowSearcherUtility&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_page_96bb3971dbb08300d8ccd421cf9619dd&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2017-08-26 04:38:44&lt;/sys_updated_on&gt;&lt;/sys_ui_page&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Workflow Searcher-V1.0">b6fdf5b1dbb08300d8ccd421cf961924</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2017-08-26 04:40:43</sys_created_on>
+<sys_id>7afdf5b1dbb08300d8ccd421cf961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2017-08-26 04:40:43</sys_updated_on>
+<table/>
+<target_name>WorkFlowSearcherUtility</target_name>
+<type>UI Page</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
